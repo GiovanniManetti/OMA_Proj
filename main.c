@@ -46,9 +46,6 @@ int main(int argc, char *argv[])
 
     FILE *f;
 
-    f = fopen(argv[1], "r");
-
-
 		/* apre il file */
     f = fopen(argv[1], "r");
     if( f == NULL ) {
@@ -70,13 +67,16 @@ int main(int argc, char *argv[])
     // Memory allocation di matrce di costi e soluzioni
     solution = malloc(nCells*sizeof( int***));
     problem.costs = malloc(nCells*sizeof( int***));
-    for (int i = 0; i < nCells; i++) {
+	 
+    int i, j, m, t;
+	
+    for (i = 0; i < nCells; i++) {
         problem.costs[i] = malloc(nCells*sizeof( int**));
         solution[i] = malloc(nCells*sizeof( int**));
-        for (int j = 0; j < nCells; j++) {
+        for (j = 0; j < nCells; j++) {
             problem.costs[i][j] = malloc(nCustomerTypes*sizeof( int*));
             solution[i][j] =  malloc(nCustomerTypes*sizeof( int*));
-            for (int m = 0; m < nCustomerTypes; m++) {
+            for (m = 0; m < nCustomerTypes; m++) {
                 problem.costs[i][j][m] =  malloc(nTimeSteps*sizeof( int));
                 solution[i][j][m] = malloc(nTimeSteps*sizeof( int));
             }
@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
     problem.n = malloc(nCustomerTypes*sizeof(int));
     problem.activities = malloc(nCells*sizeof(int));
     problem.usersCell = malloc(nCells*sizeof( int**));
-    for (int i = 0; i < nCells; i++) {
+    for (i = 0; i < nCells; i++) {
         problem.usersCell[i] = malloc(nCustomerTypes*sizeof( int*));
-        for (int m = 0; m < nCustomerTypes; m++) {
+        for (m = 0; m < nCustomerTypes; m++) {
             problem.usersCell[i][m] = malloc(nTimeSteps*sizeof( int));
         }
     }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
     // acquisizione dati. Numero task per tipo di utente
     if(fgets(line, sizeof(line), f)!= NULL){
-        for (int m = 0; m < nCustomerTypes; m++) {
+        for (m = 0; m < nCustomerTypes; m++) {
         sscanf (line, "%d", &problem.n[m]);
     }
 
@@ -112,14 +112,14 @@ int main(int argc, char *argv[])
     fgets(line, sizeof(line), f);
 
     //lettura di (t * m) matrici di costi
-    for (int m = 0; m < nCustomerTypes; m++) {
-        for (int t = 0; t < nTimeSteps; t++) {
+    for (m = 0; m < nCustomerTypes; m++) {
+        for (t = 0; t < nTimeSteps; t++) {
 
             fgets(line, sizeof(line), f);// linea con m e t (non mi serve memorizzarla)
 
-            for (int i = 0; i < nCells; i++) {
+            for (i = 0; i < nCells; i++) {
                 if(fgets(line, sizeof(line), f)!= NULL) {// linea della matrice c_{ij} per t ed m fissati
-                    for (int j = 0; j < nCells; j++) {
+                    for (j = 0; j < nCells; j++) {
                         sscanf (line, "%d", &problem.costs[i][j][m][t]);
                     }
                 }
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     fgets(line, sizeof(line), f);
     // vettore di attività da svolgere
     if(fgets(line, sizeof(line), f)!= NULL) {
-        for (int i = 0; i < nCells; i++) {
+        for (i = 0; i < nCells; i++) {
             sscanf (line, "%d", &problem.activities[i]);
         }
     }
@@ -141,13 +141,13 @@ int main(int argc, char *argv[])
     fgets(line, sizeof(line), f);
 
     // acquisizione persone presenti nelle varie celle
-    for (int m = 0; m < nCustomerTypes; m++) {
-        for (int t = 0; t < nTimeSteps; t++) {
+    for (m = 0; m < nCustomerTypes; m++) {
+        for (t = 0; t < nTimeSteps; t++) {
             fgets(line, sizeof(line), f);// linea con m e t (non mi serve memorizzarla)
 
-            for (int i = 0; i < nCells; i++) {
+            for (i = 0; i < nCells; i++) {
                 if(fgets(line, sizeof(line), f)!= NULL) {// linea di persone di tipo m presenti nella cella i al tempo t
-                    for (int j = 0; j < nCells; j++) {
+                    for (j = 0; j < nCells; j++) {
                         sscanf (line, "%d", &problem.usersCell[i][m][t]);
                         }
                     }
