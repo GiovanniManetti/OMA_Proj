@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1481193578 source:/home/ste/Informatica/Politecnico/2 Magistrale/Optimization Methods and Algorithms/assignment/C Project/OMA_Assignment/heuristic.c
+	<stdio.h>
+	<stdlib.h>
+	"heuristic.h"
+
+1481195503 /home/ste/Informatica/Politecnico/2 Magistrale/Optimization Methods and Algorithms/assignment/C Project/OMA_Assignment/heuristic.h
+	<stdio.h>
+	<stdlib.h>
+
+1481200452 source:/home/ste/Informatica/Politecnico/2 Magistrale/Optimization Methods and Algorithms/assignment/C Project/OMA_Assignment/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<stdbool.h>
+	"heuristic.h"
+
