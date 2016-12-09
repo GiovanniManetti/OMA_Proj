@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-//#include <stdbool.h>
+#include <stdbool.h>
 #include "heuristic.h"
 
 #define NLINE 2000
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
             for (i = 0; i < nCells; i++) {
                 if(fgets(line, sizeof(line), f)!= NULL) {// linea della matrice c_{ij} per t ed m fissati
-                    for (j = 0; j < nCells; j++) 
+                    for (j = 0; j < nCells; j++){
                         sscanf (line, "%d", &problem.costs[i][j][m][t]);
                     }
                 }
