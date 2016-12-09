@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <stdbool.h>
+//#include <stdbool.h>
 #include "heuristic.h"
 
 #define NLINE 2000
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     /**
      * Flag equals to true if the problems has a solution
      */
-    bool hasSolution;
+    //bool hasSolution;
 
     /**
      * Variables of the problem (X in the model)
@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
 		/* apre il file */
     f = fopen(argv[1], "r");
     if( f == NULL ) {
-    perror("Errore in apertura del file");
-    exit(1);
+        perror("Errore in apertura del file");
+        exit(1);
     }
 
 
@@ -63,13 +63,10 @@ int main(int argc, char *argv[])
         sscanf (line, "%d %d %d", &nCells, &nTimeSteps, &nCustomerTypes);
     }
 
-
     // Memory allocation di matrce di costi e soluzioni
     solution = malloc(nCells*sizeof( int***));
     problem.costs = malloc(nCells*sizeof( int***));
-	 
-    int i, j, m, t;
-	
+    int i,j,m,t;
     for (i = 0; i < nCells; i++) {
         problem.costs[i] = malloc(nCells*sizeof( int**));
         solution[i] = malloc(nCells*sizeof( int**));
@@ -79,6 +76,9 @@ int main(int argc, char *argv[])
             for (m = 0; m < nCustomerTypes; m++) {
                 problem.costs[i][j][m] =  malloc(nTimeSteps*sizeof( int));
                 solution[i][j][m] = malloc(nTimeSteps*sizeof( int));
+                for(t = 0; t < nTimeSteps; t++){
+                    solution[i][j][m][t] = 0;
+                }
             }
         }
     }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
     // acquisizione dati. Numero task per tipo di utente
     if(fgets(line, sizeof(line), f)!= NULL){
-        for (m = 0; m < nCustomerTypes; m++) {
+        for (m = 0; m < nCustomerTypes; m++)
         sscanf (line, "%d", &problem.n[m]);
     }
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
             for (i = 0; i < nCells; i++) {
                 if(fgets(line, sizeof(line), f)!= NULL) {// linea della matrice c_{ij} per t ed m fissati
-                    for (j = 0; j < nCells; j++) {
+                    for (j = 0; j < nCells; j++) 
                         sscanf (line, "%d", &problem.costs[i][j][m][t]);
                     }
                 }
@@ -155,7 +155,6 @@ int main(int argc, char *argv[])
             }
         }
 
-    }
 
         /* chiude il file */
     fclose(f);
@@ -170,9 +169,32 @@ int main(int argc, char *argv[])
 
 
     /**
-        da scrivere: liberare tutte la malloc
+        liberare tutte la malloc
     **/
+    for (i = 0; i < nCells; i++) {
+        for (j = 0; j < nCells; j++) {
+            for (m = 0; m < nCustomerTypes; m++) {
+                free(problem.costs[i][j][m]);
+                free(solution[i][j][m]);
+            }
+            free(problem.costs[i][j]);
+            free(solution[i][j]);
+        }
+        free(problem.costs[i]);
+        free(solution[i]);
+    }
+    free(problem.costs);
+    free(solution);
 
+    free(problem.n);
+    free(problem.activities);
+    for (i = 0; i < nCells; i++) {
+        for (m = 0; m < nCustomerTypes; m++) {
+            free(problem.usersCell[i][m]);
+        }
+        free(problem.usersCell[i]);
+    }
+    free(problem.usersCell);
 
     return 0;
 }
