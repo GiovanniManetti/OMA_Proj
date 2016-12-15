@@ -40,6 +40,11 @@ int main(int argc, char *argv[])
      */
     int**** solution;
 
+    /**
+     * Objective function value
+     */
+    int objFunc=0;
+
 
 
     char line[NLINE];
@@ -149,8 +154,10 @@ int main(int argc, char *argv[])
                 if(fgets(line, sizeof(line), f)!= NULL) {// linea di persone di tipo m presenti nella cella i al tempo t
                     for (j = 0; j < nCells; j++) {
                         sscanf (line, "%d", &problem.usersCell[i][m][t]);
+                        printf("%d\t", problem.usersCell[i][m][t]);
                         }
                     }
+                    printf("\n");
                 }
             }
         }
@@ -159,11 +166,23 @@ int main(int argc, char *argv[])
         /* chiude il file */
     fclose(f);
 
+/*
+    for (i = 0; i < nCells; i++) {
 
+        for (j = 0; j < nCells; j++) {
+            for (m = 0; m < nCustomerTypes; m++) {
+                for(t = 0; t < nTimeSteps; t++){
+                   // printf("%d\t", problem.costs[i][j][m][t]);
+                }
+            }
+        }
+        //printf("\n");
+    }
+*/
 
+    createRandSol(solution,problem,&objFunc,nCells,nCustomerTypes,nTimeSteps);
 
-
-
+    printf("%d", objFunc);
 
 
 
