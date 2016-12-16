@@ -22,3 +22,5 @@ struct Data {
      */
     int*** usersCell;
 };
+
+void createRandSol(int****,struct Data,int*,int,int,int);
